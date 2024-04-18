@@ -1,0 +1,11 @@
+{
+    "chunksize" : 3,
+    "tilesize" : 56,
+    "map" : [
+        {
+            "x" : 0,
+            "y" : 0,
+            "name" : "chunk0"
+        }
+    ]
+}

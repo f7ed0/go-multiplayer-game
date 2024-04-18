@@ -1,8 +1,86 @@
 package gamemap
 
-import "github.com/f7ed0/go-multiplayer-game/commons/objects"
+import (
+	"encoding/json"
+	"errors"
+	"io"
+	"os"
+
+	"github.com/f7ed0/go-multiplayer-game/commons/objects"
+	"github.com/veandco/go-sdl2/sdl"
+)
 
 type GameMap struct {
-	Walls []objects.Polygon `json:"walls"`
-	Holes []objects.Polygon `json:"holes"`
+	Path     string
+	Walls    []objects.Polygon `json:"walls"`
+	Holes    []objects.Polygon `json:"holes"`
+	Textures []Texture
+	ChunksM  ChunkMap
+	ChunksD  ChunkData
+}
+
+type Texture struct {
+	Texture  *sdl.Texture
+	TileSize int
+}
+
+type GameMapTextureLoader struct {
+	File     string `json:"file"`
+	Tilesize int    `json:"tilesize"`
+}
+
+type ChunkMap struct {
+	ChunkSize int         `json:"chunksize"`
+	TileSize  int         `json:"tilesize"`
+	ChunkList []ChunkInfo `json:"map"`
+}
+
+type ChunkInfo struct {
+	X    int    `json:"x"`
+	Y    int    `json:"y"`
+	Name string `json:"name"`
+}
+
+type ChunkData map[string]ChunkRaw
+
+type ChunkRaw [][]TilesRaw
+
+type TilesRaw struct {
+	Texture int `json:"texture"`
+	TileX   int `json:"tile_x"`
+	TileY   int `json:"tile_y"`
+}
+
+func (g GameMap) GetChunkAt(x int, y int) (res ChunkRaw, err error) {
+	if g.ChunksD == nil {
+		g.ChunksD = make(ChunkData)
+	}
+	for _, item := range g.ChunksM.ChunkList {
+		if item.X == x && item.Y == y {
+			v, ok := g.ChunksD[item.Name]
+			if !ok {
+				var f *os.File
+				var bt []byte
+				f, err = os.Open(g.Path + "/chunks/" + item.Name + ".json")
+				if err != nil {
+					return
+				}
+				bt, err = io.ReadAll(f)
+				if err != nil {
+					return
+				}
+				f.Close()
+				err = json.Unmarshal(bt, &res)
+				if err != nil {
+					return
+				}
+				g.ChunksD[item.Name] = res
+				return
+			}
+			res = v
+			return
+		}
+	}
+	err = errors.New("No chunk found.")
+	return
 }

@@ -28,8 +28,7 @@ func (w *Window) MainLoop() {
 		w.render()
 
 		w.debug.FrameCount++
-		w.debug.FrameTime = int(time.Since(t2).Microseconds())
-		w.debug.FrameTimeBuffer.Stack(w.debug.FrameTime)
+		w.debug.FrameTimeBuffer.Stack(int(time.Since(t2).Microseconds()))
 		time.Sleep(time.Duration(timing - time.Since(t2)))
 		t2 = time.Now()
 	}

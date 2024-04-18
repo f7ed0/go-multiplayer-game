@@ -11,7 +11,7 @@ func main() {
 	if err != nil {
 		lg.Error.Fatalln("Error initialising window : ", err.Error())
 	}
-	err = w.LoadMap("assets/maps/test1.json")
+	err = w.LoadMap("assets/maps/test1")
 	if err != nil {
 		lg.Error.Fatalln("Error loading map : ", err.Error())
 	}

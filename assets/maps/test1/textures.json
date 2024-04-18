@@ -1,0 +1,38 @@
+[
+    {
+        "file" : "TX Plant.png",
+        "tilesize" : 32
+    },
+    {
+        "file" : "TX Player.png",
+        "tilesize" : 32
+    },
+    {
+        "file" : "TX Props.png",
+        "tilesize" : 32
+    },
+    {
+        "file" : "TX Shadow Plant.png",
+        "tilesize" : 32
+    },
+    {
+        "file" : "TX Shadow.png",
+        "tilesize" : 32
+    },
+    {
+        "file" : "TX Struct.png",
+        "tilesize" : 32
+    },
+    {
+        "file" : "TX Tileset Grass.png",
+        "tilesize" : 32
+    },
+    {
+        "file" : "TX Tileset Stone Ground.png",
+        "tilesize" : 32
+    },
+    {
+        "file" : "TX Tileset Wall.png",
+        "tilesize" : 32
+    }
+]
