@@ -7,7 +7,7 @@ import (
 	"github.com/veandco/go-sdl2/ttf"
 )
 
-const FPS int64 = 144
+const FPS int64 = 60
 
 func (w *Window) MainLoop() {
 	w.Setup()
@@ -16,6 +16,7 @@ func (w *Window) MainLoop() {
 	var t time.Time = time.Now()
 	w.debug.FrameCount = 0
 	t2 := time.Now()
+	t3 := time.Now()
 	for !w.exit {
 
 		if time.Since(t) > 400*time.Millisecond {
@@ -24,7 +25,8 @@ func (w *Window) MainLoop() {
 			t = t2
 		}
 
-		w.event()
+		w.event(float32(time.Since(t3).Microseconds()) / 1000000)
+		t3 = time.Now()
 		w.render()
 
 		w.debug.FrameCount++

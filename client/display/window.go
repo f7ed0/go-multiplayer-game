@@ -4,9 +4,12 @@ import (
 	"encoding/json"
 	"io"
 	"os"
+	"sync"
 
 	"github.com/f7ed0/go-multiplayer-game/client/display/camera"
-	"github.com/f7ed0/go-multiplayer-game/commons/gamemap"
+	handleplayer "github.com/f7ed0/go-multiplayer-game/client/handle_player"
+	"github.com/f7ed0/go-multiplayer-game/client/mapdisp"
+	"github.com/f7ed0/go-multiplayer-game/commons/entity/player"
 	"github.com/f7ed0/go-multiplayer-game/commons/lg"
 	"github.com/f7ed0/go-multiplayer-game/commons/objects"
 	"github.com/veandco/go-sdl2/img"
@@ -21,8 +24,12 @@ type Window struct {
 	font    *ttf.Font
 	exit    bool
 	debug   DebugStat
-	GameMap gamemap.GameMap
+	GameMap mapdisp.GameMap
 	camera  camera.Camera
+
+	Me         handleplayer.HandledPlayer
+	Other      []player.PlayerCore
+	OtherMutex sync.RWMutex
 
 	show_debug bool // TODO : move it to debug stat
 }
@@ -50,15 +57,16 @@ func NewWindow() (*Window, error) {
 		exit:     false,
 		camera: camera.Camera{
 			Position: objects.Point{
-				X: 0,
-				Y: 0,
-				Z: 1,
+				X: 50,
+				Y: 50,
+				Z: 2,
 			},
 		},
 		debug: DebugStat{
 			FrameCountBuffer: objects.NewIntBuffer(30),
 			FrameTimeBuffer:  objects.NewIntBuffer(100),
 		},
+		Me: handleplayer.NewHandledPlayer(),
 	}, nil
 }
 
@@ -81,7 +89,7 @@ func (w *Window) LoadMap(path string) (err error) {
 	lg.Debug.Println(w.GameMap)
 
 	// LOADING TEXTURES
-	var texs []gamemap.GameMapTextureLoader
+	var texs []mapdisp.GameMapTextureLoader
 	f, err = os.Open(path + "/textures.json")
 	if err != nil {
 		return
@@ -97,7 +105,7 @@ func (w *Window) LoadMap(path string) (err error) {
 	}
 	var surface *sdl.Surface
 	var texture *sdl.Texture
-	w.GameMap.Textures = []gamemap.Texture{}
+	w.GameMap.Textures = []mapdisp.Texture{}
 	for _, item := range texs {
 		surface, err = img.Load(path + "/textures/" + item.File)
 		if err != nil {
@@ -110,7 +118,7 @@ func (w *Window) LoadMap(path string) (err error) {
 		surface.Free()
 		w.GameMap.Textures = append(
 			w.GameMap.Textures,
-			gamemap.Texture{
+			mapdisp.Texture{
 				Texture:  texture,
 				TileSize: item.Tilesize,
 			},

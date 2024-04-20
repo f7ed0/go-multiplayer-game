@@ -1,0 +1,91 @@
+{
+    "underlayers": [
+        [
+            {
+                "texture": 6,
+                "tile_x": 0,
+                "tile_y": 0
+            },
+            {
+                "texture": 6,
+                "tile_x": 0,
+                "tile_y": 0
+            },
+            {
+                "texture": 6,
+                "tile_x": 0,
+                "tile_y": 0
+            },
+            {
+                "texture": 6,
+                "tile_x": 0,
+                "tile_y": 0
+            },
+            {
+                "texture": 6,
+                "tile_x": 0,
+                "tile_y": 0
+            },
+            {
+                "texture": 6,
+                "tile_x": 0,
+                "tile_y": 0
+            },
+            {
+                "texture": 6,
+                "tile_x": 0,
+                "tile_y": 0
+            },
+            {
+                "texture": 6,
+                "tile_x": 0,
+                "tile_y": 0
+            },
+            {
+                "texture": 6,
+                "tile_x": 0,
+                "tile_y": 0
+            },
+            {
+                "texture": 6,
+                "tile_x": 0,
+                "tile_y": 0
+            },
+            {
+                "texture": 6,
+                "tile_x": 0,
+                "tile_y": 0
+            },
+            {
+                "texture": 6,
+                "tile_x": 0,
+                "tile_y": 0
+            },
+            {
+                "texture": 6,
+                "tile_x": 0,
+                "tile_y": 0
+            },
+            {
+                "texture": 6,
+                "tile_x": 0,
+                "tile_y": 0
+            },
+            {
+                "texture": 6,
+                "tile_x": 0,
+                "tile_y": 0
+            },
+            {
+                "texture": 6,
+                "tile_x": 0,
+                "tile_y": 0
+            }
+        ]
+    ],
+    "overlayers": [
+
+    ],
+    "props":[
+    ]
+}

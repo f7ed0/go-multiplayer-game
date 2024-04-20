@@ -13,5 +13,6 @@ func NewEntity(killable, breakable bool) Entity {
 	return Entity{
 		killable:  killable,
 		breakable: breakable,
+		Position:  objects.Point{X: 1, Y: 1},
 	}
 }

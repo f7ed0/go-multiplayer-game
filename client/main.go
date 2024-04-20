@@ -15,5 +15,6 @@ func main() {
 	if err != nil {
 		lg.Error.Fatalln("Error loading map : ", err.Error())
 	}
+	go w.Communication()
 	w.MainLoop()
 }
