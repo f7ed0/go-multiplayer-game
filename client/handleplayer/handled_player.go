@@ -4,7 +4,7 @@ import (
 	"math"
 	"sync"
 
-	"github.com/f7ed0/go-multiplayer-game/client/display/camera"
+	"github.com/f7ed0/go-multiplayer-game/client/handleplayer/camera"
 	"github.com/f7ed0/go-multiplayer-game/commons/entity/player"
 	"github.com/f7ed0/go-multiplayer-game/commons/objects"
 	"github.com/veandco/go-sdl2/sdl"
@@ -46,7 +46,7 @@ func NewHandledPlayer() HandledPlayer {
 			Position: objects.Point{
 				X: 0,
 				Y: 0,
-				Z: 3,
+				Z: 2,
 			},
 		},
 		PlayerCore: player.NewPlayer(),

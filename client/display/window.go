@@ -29,6 +29,9 @@ type Window struct {
 	Other      []player.PlayerCore
 	OtherMutex sync.RWMutex
 
+	width  int
+	height int
+
 	show_debug bool // TODO : move it to debug stat
 }
 
@@ -45,7 +48,7 @@ func NewWindow() (*Window, error) {
 			return nil, err
 		}
 	}
-	w, r, err := sdl.CreateWindowAndRenderer(1280, 720, sdl.WINDOW_ALLOW_HIGHDPI)
+	w, r, err := sdl.CreateWindowAndRenderer(1280, 720, sdl.WINDOW_ALLOW_HIGHDPI|sdl.WINDOW_RESIZABLE)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +60,9 @@ func NewWindow() (*Window, error) {
 			FrameCountBuffer: objects.NewIntBuffer(30),
 			FrameTimeBuffer:  objects.NewIntBuffer(100),
 		},
-		Me: handleplayer.NewHandledPlayer(),
+		width:  1280,
+		height: 720,
+		Me:     handleplayer.NewHandledPlayer(),
 	}, nil
 }
 

@@ -37,13 +37,13 @@ func (w *Window) PlayerLayer() {
 		w.OtherMutex.RUnlock()
 		var i, j int
 		for i < len(chunk.Props) && j < len(a) {
-			if ((chunk.Props[i].MaxY)*w.GameMap.ChunksM.TileSize)+r_o_y < int(a[j].Position.Y)-w.GameMap.ChunksM.TileSize {
+			if (chunk.Props[i].MaxY*w.GameMap.ChunksM.TileSize)+r_o_y < int(a[j].Position.Y)+w.GameMap.ChunksM.TileSize {
 				w.renderProp(chunk.Props[i], r_o_x, r_o_y)
 				i++
 			} else {
 				offseted := w.applyOffset(a[j].Position)
 				height := w.applyOffsetF32(float32(w.GameMap.ChunksM.TileSize))
-				width := height / 2
+				width := height / 1.5
 				w.renderer.SetDrawColor(255, 100, 100, 255)
 				w.renderer.FillRectF(&sdl.FRect{
 					X: offseted.X,
@@ -61,7 +61,7 @@ func (w *Window) PlayerLayer() {
 		for j < len(a) {
 			offseted := w.applyOffset(a[j].Position)
 			height := w.applyOffsetF32(float32(w.GameMap.ChunksM.TileSize))
-			width := height / 2
+			width := height / 1.5
 			w.renderer.SetDrawColor(255, 100, 100, 255)
 			w.renderer.FillRectF(&sdl.FRect{
 				X: offseted.X,

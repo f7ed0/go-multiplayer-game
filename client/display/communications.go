@@ -54,7 +54,8 @@ func (w *Window) Communication() {
 		}
 
 		w.Me.Lock()
-		if objects.Diff(w.Me.Position, pcore.Position).N2_2D() > 20 {
+		if objects.Diff(w.Me.Position, pcore.Position).N2_2D() > 30 {
+			lg.Debug.Println("ROLBACKED")
 			w.Me.Position = pcore.Position
 		}
 		w.Me.Unlock()
@@ -65,7 +66,6 @@ func (w *Window) Communication() {
 			lg.Error.Fatalln(err.Error())
 			return
 		}
-		lg.Debug.Println(pcores)
 
 		w.OtherMutex.Lock()
 		w.Other = pcores

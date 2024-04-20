@@ -7,11 +7,11 @@ import (
 	"github.com/veandco/go-sdl2/ttf"
 )
 
-const FPS int64 = 144
+const FPS int64 = 500
 
 func (w *Window) MainLoop() {
 	w.Setup()
-	var timing time.Duration = time.Duration((1000000000 / FPS)) - 590*time.Microsecond
+	var timing time.Duration = time.Duration((1000000000 / FPS)) //- 590*time.Microsecond
 	lg.Debug.Println(timing)
 	var t time.Time = time.Now()
 	w.debug.FrameCount = 0
@@ -31,7 +31,7 @@ func (w *Window) MainLoop() {
 
 		w.debug.FrameCount++
 		w.debug.FrameTimeBuffer.Stack(int(time.Since(t2).Microseconds()))
-		time.Sleep(time.Duration(timing - time.Since(t2)))
+		time.Sleep(time.Duration(timing - 2*time.Since(t2)))
 		t2 = time.Now()
 	}
 

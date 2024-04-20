@@ -62,6 +62,8 @@ func (w *Window) debugLayer() {
 	ft_text := fmt.Sprintf("%.0f µs FT", w.debug.FrameTimeBuffer.GetMean())
 	sdlplus.RenderText(w.renderer, w.font, ft_text, ORANGE, 10, objects.Point{X: 0, Y: 21})
 
+	size_text := fmt.Sprintf("res : %vx%v", w.width, w.height)
+	sdlplus.RenderText(w.renderer, w.font, size_text, ORANGE, 10, objects.Point{X: 0, Y: 42})
 }
 
 var (
@@ -82,10 +84,9 @@ func (w *Window) DrawPolygon(p objects.Polygon) {
 }
 
 func (w *Window) applyOffset(p objects.Point) objects.Point {
-	width, height := w.self.GetSize()
 	return objects.Point{
-		X: (p.X-w.Me.Camera.Position.X)*w.Me.Camera.Position.Z + float32(width)/2,
-		Y: (p.Y-w.Me.Camera.Position.Y)*w.Me.Camera.Position.Z + float32(height)/2,
+		X: (p.X-w.Me.Camera.Position.X)*w.Me.Camera.Position.Z + float32(w.width)/2,
+		Y: (p.Y-w.Me.Camera.Position.Y)*w.Me.Camera.Position.Z + float32(w.height)/2,
 		Z: p.Z,
 	}
 }
