@@ -7,13 +7,12 @@ import (
 )
 
 func actionThread() {
-	t2 := time.Now()
-	for true {
+	for {
 		globals.Players.Lock()
 		for _, v := range globals.Players.Players {
-			v.ApplyEvent(float32(time.Since(t2).Milliseconds()) / 1000)
+			v.ApplyEvent(float32(time.Since(v.LastTime).Milliseconds()) / 1000)
+			v.LastTime = time.Now()
 		}
-		t2 = time.Now()
 		globals.Players.Unlock()
 		time.Sleep(5 * time.Millisecond)
 	}

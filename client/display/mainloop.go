@@ -7,7 +7,7 @@ import (
 	"github.com/veandco/go-sdl2/ttf"
 )
 
-const FPS int64 = 60
+const FPS int64 = 144
 
 func (w *Window) MainLoop() {
 	w.Setup()

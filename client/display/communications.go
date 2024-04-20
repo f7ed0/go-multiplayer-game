@@ -30,15 +30,18 @@ func (w *Window) Communication() {
 		lg.Error.Fatalln(err.Error())
 		return
 	}
-	for true {
+	lg.Info.Println("Connected to", conn.RemoteAddr())
+	for {
 		err = in.Decode(&msg)
 		if err != nil {
 			lg.Error.Fatalln(err.Error())
 			return
 		}
+
 		w.Me.RLock()
 		err = out.Encode(&w.Me.ActionBuffer)
 		w.Me.RUnlock()
+
 		if err != nil {
 			lg.Error.Fatalln(err.Error())
 			return
@@ -49,19 +52,24 @@ func (w *Window) Communication() {
 			lg.Error.Fatalln(err.Error())
 			return
 		}
+
 		w.Me.Lock()
 		if objects.Diff(w.Me.Position, pcore.Position).N2_2D() > 20 {
 			w.Me.Position = pcore.Position
 		}
 		w.Me.Unlock()
+
 		var pcores []player.PlayerCore
 		err = in.Decode(&pcores)
 		if err != nil {
 			lg.Error.Fatalln(err.Error())
 			return
 		}
+		lg.Debug.Println(pcores)
+
 		w.OtherMutex.Lock()
 		w.Other = pcores
 		w.OtherMutex.Unlock()
+
 	}
 }

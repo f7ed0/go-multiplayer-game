@@ -2,8 +2,8 @@ package display
 
 import (
 	"math"
+	"time"
 
-	"github.com/f7ed0/go-multiplayer-game/commons/objects"
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -21,14 +21,16 @@ func (w *Window) event(delta float32) {
 	w.Me.Lock()
 	w.Me.ApplyEvent(delta)
 	w.Me.Unlock()
-	diff := objects.Diff(w.camera.Position, w.Me.Position)
-	//lg.Debug.Println(diff.X, objects.Sign(diff.X))
-	if math.Abs(float64(diff.X)) > 50 {
-		w.camera.Position.X = w.Me.Position.X - 51*objects.Sign(diff.X)
+	w.OtherMutex.Lock()
+	for i := range w.Other {
+		w.Other[i].ApplyEvent(
+			float32(math.Min(
+				float64(delta),
+				float64(time.Since(w.Other[i].LastTime))/1000,
+			)),
+		)
 	}
-	if math.Abs(float64(diff.Y)) > 50 {
-		w.camera.Position.Y = w.Me.Position.Y - 51*objects.Sign(diff.Y)
-	}
+	w.OtherMutex.Unlock()
 }
 
 func (w *Window) handleKeyboardEvent(e *sdl.KeyboardEvent, toogle bool) {

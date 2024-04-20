@@ -27,7 +27,7 @@ func main() {
 			log.Default().Fatal("Error Accepting new client : " + err.Error())
 		}
 		lg.Info.Println("Someone trying to connect...")
-		playerThread(newplayer)
+		go playerThread(newplayer)
 	}
 
 }

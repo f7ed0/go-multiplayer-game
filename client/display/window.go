@@ -6,8 +6,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/f7ed0/go-multiplayer-game/client/display/camera"
-	handleplayer "github.com/f7ed0/go-multiplayer-game/client/handle_player"
+	"github.com/f7ed0/go-multiplayer-game/client/handleplayer"
 	"github.com/f7ed0/go-multiplayer-game/client/mapdisp"
 	"github.com/f7ed0/go-multiplayer-game/commons/entity/player"
 	"github.com/f7ed0/go-multiplayer-game/commons/lg"
@@ -25,7 +24,6 @@ type Window struct {
 	exit    bool
 	debug   DebugStat
 	GameMap mapdisp.GameMap
-	camera  camera.Camera
 
 	Me         handleplayer.HandledPlayer
 	Other      []player.PlayerCore
@@ -55,13 +53,6 @@ func NewWindow() (*Window, error) {
 		self:     w,
 		renderer: r,
 		exit:     false,
-		camera: camera.Camera{
-			Position: objects.Point{
-				X: 50,
-				Y: 50,
-				Z: 2,
-			},
-		},
 		debug: DebugStat{
 			FrameCountBuffer: objects.NewIntBuffer(30),
 			FrameTimeBuffer:  objects.NewIntBuffer(100),

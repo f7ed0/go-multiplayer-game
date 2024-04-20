@@ -84,12 +84,12 @@ func (w *Window) DrawPolygon(p objects.Polygon) {
 func (w *Window) applyOffset(p objects.Point) objects.Point {
 	width, height := w.self.GetSize()
 	return objects.Point{
-		X: (p.X-w.camera.Position.X)*w.camera.Position.Z + float32(width)/2,
-		Y: (p.Y-w.camera.Position.Y)*w.camera.Position.Z + float32(height)/2,
+		X: (p.X-w.Me.Camera.Position.X)*w.Me.Camera.Position.Z + float32(width)/2,
+		Y: (p.Y-w.Me.Camera.Position.Y)*w.Me.Camera.Position.Z + float32(height)/2,
 		Z: p.Z,
 	}
 }
 
 func (w *Window) applyOffsetF32(value float32) float32 {
-	return value * w.camera.Position.Z
+	return value * w.Me.Camera.Position.Z
 }
