@@ -65,11 +65,9 @@ func (w *Window) handleWindowEvent(e *sdl.WindowEvent) {
 }
 
 func (w *Window) ToggleFullScreen(state bool) {
-
 	if w.self.GetFlags()&sdl.WINDOW_FULLSCREEN_DESKTOP > 0 {
 		w.self.SetFullscreen(0)
 	} else {
 		w.self.SetFullscreen(sdl.WINDOW_FULLSCREEN_DESKTOP)
 	}
-
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/f7ed0/go-multiplayer-game/client/display/sdlplus"
+	hitbox "github.com/f7ed0/go-multiplayer-game/commons/Hitbox"
 	"github.com/f7ed0/go-multiplayer-game/commons/lg"
 	"github.com/f7ed0/go-multiplayer-game/commons/objects"
 	"github.com/veandco/go-sdl2/sdl"
@@ -46,11 +47,11 @@ func (w *Window) mapUnderLayer() {
 func (w *Window) hiboxLayer() {
 	w.renderer.SetDrawColor(255, 0, 0, 255)
 	for _, poly := range w.GameMap.Walls {
-		w.DrawPolygon(poly)
+		w.DrawHitboxes(poly)
 	}
 	w.renderer.SetDrawColor(0, 0, 255, 255)
 	for _, poly := range w.GameMap.Holes {
-		w.DrawPolygon(poly)
+		w.DrawHitboxes(poly)
 	}
 
 }
@@ -71,7 +72,7 @@ var (
 	ORANGE = sdl.Color{R: 255, G: 200, B: 0, A: 255}
 )
 
-func (w *Window) DrawPolygon(p objects.Polygon) {
+func (w *Window) DrawHitboxes(p hitbox.Hitbox) {
 	for i := 0; i < len(p.Points)-1; i++ {
 		pi := w.applyOffset(p.Points[i])
 		pi1 := w.applyOffset(p.Points[i+1])

@@ -127,6 +127,6 @@ func (g *GameMap) GetChunkAt(x int, y int) (res ChunkRaw, err error) {
 			return
 		}
 	}
-	err = errors.New("No chunk found.")
+	err = errors.New("no chunk found")
 	return
 }

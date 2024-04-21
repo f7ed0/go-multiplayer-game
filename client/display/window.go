@@ -1,17 +1,12 @@
 package display
 
 import (
-	"encoding/json"
-	"io"
-	"os"
 	"sync"
 
 	"github.com/f7ed0/go-multiplayer-game/client/handleplayer"
 	"github.com/f7ed0/go-multiplayer-game/client/mapdisp"
 	"github.com/f7ed0/go-multiplayer-game/commons/entity/player"
-	"github.com/f7ed0/go-multiplayer-game/commons/lg"
 	"github.com/f7ed0/go-multiplayer-game/commons/objects"
-	"github.com/veandco/go-sdl2/img"
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/ttf"
 )
@@ -67,74 +62,6 @@ func NewWindow() (*Window, error) {
 }
 
 func (w *Window) LoadMap(path string) (err error) {
-	w.GameMap.Path = path
-	// LOADING HITBOXES
-	f, err := os.Open(path + "/hitboxes.json")
-	if err != nil {
-		return
-	}
-	res, err := io.ReadAll(f)
-	if err != nil {
-		return
-	}
-	f.Close()
-	err = json.Unmarshal(res, &w.GameMap)
-	if err != nil {
-		return
-	}
-	lg.Debug.Println(w.GameMap)
-
-	// LOADING TEXTURES
-	var texs []mapdisp.GameMapTextureLoader
-	f, err = os.Open(path + "/textures.json")
-	if err != nil {
-		return
-	}
-	res, err = io.ReadAll(f)
-	if err != nil {
-		return
-	}
-	f.Close()
-	err = json.Unmarshal(res, &texs)
-	if err != nil {
-		return
-	}
-	var surface *sdl.Surface
-	var texture *sdl.Texture
-	w.GameMap.Textures = []mapdisp.Texture{}
-	for _, item := range texs {
-		surface, err = img.Load(path + "/textures/" + item.File)
-		if err != nil {
-			return
-		}
-		texture, err = w.renderer.CreateTextureFromSurface(surface)
-		if err != nil {
-			return
-		}
-		surface.Free()
-		w.GameMap.Textures = append(
-			w.GameMap.Textures,
-			mapdisp.Texture{
-				Texture:  texture,
-				TileSize: item.Tilesize,
-			},
-		)
-	}
-
-	// LOADING CHUNKS
-	f, err = os.Open(path + "/chunkmap.json")
-	if err != nil {
-		return
-	}
-	res, err = io.ReadAll(f)
-	if err != nil {
-		return
-	}
-	f.Close()
-	err = json.Unmarshal(res, &w.GameMap.ChunksM)
-	if err != nil {
-		return
-	}
-
+	w.GameMap, err = mapdisp.LoadMap(w.renderer, path)
 	return
 }
