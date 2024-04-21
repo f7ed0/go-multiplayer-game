@@ -6,7 +6,14 @@ import (
 	"github.com/f7ed0/go-multiplayer-game/commons/entity"
 )
 
+type PlayerType uint
+
+const (
+	KNIGHT PlayerType = 1
+)
+
 type PlayerCore struct {
+	Type         PlayerType
 	ActionBuffer ActionBuffer
 	entity.Entity
 	LastTime time.Time
@@ -14,6 +21,7 @@ type PlayerCore struct {
 
 func NewPlayer() PlayerCore {
 	return PlayerCore{
+		Type:         KNIGHT,
 		ActionBuffer: 0,
 		Entity:       entity.NewEntity(true, false, false, false),
 		LastTime:     time.Now(),

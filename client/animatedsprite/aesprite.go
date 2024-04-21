@@ -1,7 +1,9 @@
 package animatedsprite
 
 import (
-	"time"
+	"encoding/json"
+	"io"
+	"os"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -24,12 +26,24 @@ type AespriteMetaFrameTag struct {
 }
 
 type AespriteFrame struct {
-	Frame    *sdl.Rect
-	Rotated  bool
-	Trimmed  bool
-	Duration time.Duration
+	Frame    sdl.Rect `json:"frame"`
+	Rotated  bool     `json:"rotated"`
+	Trimmed  bool     `json:"trimmed"`
+	Duration int      `json:"duration"`
 }
 
-func NewAesprite(path string) {
-	// TODO
+func NewAesprite(path string) (sprite *Aesprite, err error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return
+	}
+	var jsonb []byte
+	jsonb, err = io.ReadAll(f)
+	if err != nil {
+		return
+	}
+	sprite = new(Aesprite)
+	*sprite = Aesprite{}
+	err = json.Unmarshal(jsonb, sprite)
+	return
 }

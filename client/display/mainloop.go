@@ -7,7 +7,7 @@ import (
 	"github.com/veandco/go-sdl2/ttf"
 )
 
-const FPS int64 = 500
+const FPS int64 = 144
 
 func (w *Window) MainLoop() {
 	w.Setup()
@@ -40,6 +40,10 @@ func (w *Window) MainLoop() {
 func (w *Window) Setup() {
 	var err error
 	w.font, err = ttf.OpenFont("assets/fonts/Exo2-Medium.ttf", 20)
+	if err != nil {
+		lg.Error.Fatalln(err.Error())
+	}
+	err = w.LoadPlayerModels()
 	if err != nil {
 		lg.Error.Fatalln(err.Error())
 	}
