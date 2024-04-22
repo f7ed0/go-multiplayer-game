@@ -2,7 +2,6 @@ package display
 
 import (
 	"encoding/gob"
-	"log"
 	"net"
 
 	"github.com/f7ed0/go-multiplayer-game/commons/entity/player"
@@ -10,16 +9,12 @@ import (
 	"github.com/f7ed0/go-multiplayer-game/commons/objects"
 )
 
-func (w *Window) Communication() {
-	conn, err := net.Dial("tcp", "localhost:44444")
-	if err != nil {
-		log.Fatal("Error during connection : " + err.Error())
-	}
-	defer conn.Close()
+func (w *Window) Communication(conn net.Conn) {
+
 	out := gob.NewEncoder(conn)
 	in := gob.NewDecoder(conn)
 	var msg string
-	err = in.Decode(&msg)
+	err := in.Decode(&msg)
 	if err != nil {
 		lg.Error.Fatalln(err.Error())
 		return
