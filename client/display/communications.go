@@ -4,6 +4,7 @@ import (
 	"encoding/gob"
 	"net"
 	"slices"
+	"time"
 
 	"github.com/f7ed0/go-multiplayer-game/client/handleplayer"
 	"github.com/f7ed0/go-multiplayer-game/commons/entity/player"
@@ -67,9 +68,11 @@ func (w *Window) Communication(conn net.Conn) {
 		w.OtherMutex.Lock()
 		showed := []string{}
 		for _, item := range pcores {
+			item.LastTime = time.Now()
 			_, ok := w.Other[item.Hash]
 			if ok {
 				w.Other[item.Hash].PlayerCore = item
+				lg.Debug.Println(item, time.Since(item.LastTime))
 				w.Other[item.Hash].Here = true
 			} else {
 				p := handleplayer.FromPlayerCore(item)
@@ -83,7 +86,7 @@ func (w *Window) Communication(conn net.Conn) {
 				w.Other[k].Here = false
 			}
 		}
-
+		lg.Debug.Println(len(w.Other))
 		w.OtherMutex.Unlock()
 
 	}

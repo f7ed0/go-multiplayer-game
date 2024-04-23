@@ -25,14 +25,16 @@ func (w *Window) event(delta float32) {
 	w.Me.ApplyEvent(delta)
 	w.Me.Unlock()
 	w.OtherMutex.Lock()
+
 	for i := range w.Other {
 		w.Other[i].ApplyEvent(
 			float32(math.Min(
 				float64(delta),
-				float64(time.Since(w.Other[i].LastTime))/1000,
+				float64(time.Since(w.Other[i].LastTime).Milliseconds())/1000,
 			)),
 		)
 	}
+
 	w.OtherMutex.Unlock()
 }
 
