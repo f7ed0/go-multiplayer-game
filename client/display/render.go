@@ -10,11 +10,11 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-func (w *Window) render() {
+func (w *Window) render(delta int) {
 	w.renderer.SetDrawColor(0, 0, 0, 255)
 	w.renderer.Clear()
 	w.mapUnderLayer()
-	w.PlayerLayer()
+	w.PlayerLayer(delta)
 	w.mapOverLayer()
 	if w.show_debug {
 		w.hiboxLayer()
@@ -85,13 +85,9 @@ func (w *Window) DrawHitboxes(p hitbox.Hitbox) {
 }
 
 func (w *Window) applyOffset(p objects.Point) objects.Point {
-	return objects.Point{
-		X: (p.X-w.Me.Camera.Position.X)*w.Me.Camera.Position.Z + float32(w.width)/2,
-		Y: (p.Y-w.Me.Camera.Position.Y)*w.Me.Camera.Position.Z + float32(w.height)/2,
-		Z: p.Z,
-	}
+	return w.Me.Camera.ApplyOffset(p, w.width, w.height)
 }
 
 func (w *Window) applyOffsetF32(value float32) float32 {
-	return value * w.Me.Camera.Position.Z
+	return w.Me.Camera.ApplyOffsetF32(value)
 }

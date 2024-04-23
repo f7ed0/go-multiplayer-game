@@ -6,22 +6,17 @@ import (
 	"github.com/f7ed0/go-multiplayer-game/commons/entity"
 )
 
-type PlayerType uint
-
-const (
-	KNIGHT PlayerType = 1
-)
-
 type PlayerCore struct {
-	Type         PlayerType
+	Type         entity.EntityType
 	ActionBuffer ActionBuffer
 	entity.Entity
 	LastTime time.Time
+	Hash     string
 }
 
 func NewPlayer() PlayerCore {
 	return PlayerCore{
-		Type:         KNIGHT,
+		Type:         entity.KNIGHT,
 		ActionBuffer: 0,
 		Entity:       entity.NewEntity(true, false, false, false),
 		LastTime:     time.Now(),
@@ -41,5 +36,9 @@ func (p *PlayerCore) ApplyEvent(delta float32) {
 	if p.ActionBuffer.Get(MOVE_RIGHT) {
 		p.Position.X += 100 * delta
 	}
+
+}
+
+func (p *PlayerCore) ClearEvent() {
 
 }

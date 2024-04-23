@@ -5,35 +5,33 @@ import (
 	"io"
 	"os"
 
+	"github.com/veandco/go-sdl2/img"
 	"github.com/veandco/go-sdl2/sdl"
 )
 
 type Aesprite struct {
 	Texture *sdl.Texture
-	Frames  map[string]AespriteFrame `json:"frames"`
-	meta    AespriteMeta
+	Frames  []*AespriteFrame `json:"frames"`
+	Meta    AespriteMeta     `json:"meta"`
 }
 
 type AespriteMeta struct {
-	frameTags []AespriteMetaFrameTag
+	FrameTags map[string]AespriteMetaFrameTag `json:"frameTags"`
 }
 
 type AespriteMetaFrameTag struct {
-	Name      string `json:"name"`
-	From      int    `json:"from"`
-	To        int    `json:"to"`
-	Direction string `json:"direction"`
+	Name string `json:"name"`
+	From int    `json:"from"`
+	To   int    `json:"to"`
 }
 
 type AespriteFrame struct {
 	Frame    sdl.Rect `json:"frame"`
-	Rotated  bool     `json:"rotated"`
-	Trimmed  bool     `json:"trimmed"`
 	Duration int      `json:"duration"`
 }
 
-func NewAesprite(path string) (sprite *Aesprite, err error) {
-	f, err := os.Open(path)
+func NewAesprite(json_path string, texture_path string, r *sdl.Renderer) (sprite *Aesprite, err error) {
+	f, err := os.Open(json_path)
 	if err != nil {
 		return
 	}
@@ -45,5 +43,32 @@ func NewAesprite(path string) (sprite *Aesprite, err error) {
 	sprite = new(Aesprite)
 	*sprite = Aesprite{}
 	err = json.Unmarshal(jsonb, sprite)
+	if err != nil {
+		return
+	}
+	surf, err := img.Load(texture_path)
+	if err != nil {
+		return
+	}
+	tex, err := r.CreateTextureFromSurface(surf)
+	if err != nil {
+		return
+	}
+	surf.Free()
+	sprite.Texture = tex
+
 	return
+}
+
+func (aes *Aesprite) GetFrame(animation string, frame int) sdl.Rect {
+	v, ok := aes.Meta.FrameTags[animation]
+
+	if ok {
+		return aes.Frames[v.From+((frame/150)%(v.To-v.From+1))].Frame
+	}
+	return sdl.Rect{}
+}
+
+func (aes *Aesprite) GetTexture() *sdl.Texture {
+	return aes.Texture
 }

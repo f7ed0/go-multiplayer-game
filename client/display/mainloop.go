@@ -17,6 +17,7 @@ func (w *Window) MainLoop() {
 	w.debug.FrameCount = 0
 	t2 := time.Now()
 	t3 := time.Now()
+	t4 := time.Now()
 	for !w.exit {
 
 		if time.Since(t) > 400*time.Millisecond {
@@ -27,7 +28,8 @@ func (w *Window) MainLoop() {
 
 		w.event(float32(time.Since(t3).Microseconds()) / 1000000)
 		t3 = time.Now()
-		w.render()
+		w.render(int(time.Since(t4).Milliseconds()))
+		t4 = time.Now()
 
 		w.debug.FrameCount++
 		w.debug.FrameTimeBuffer.Stack(int(time.Since(t2).Microseconds()))

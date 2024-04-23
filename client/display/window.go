@@ -4,9 +4,10 @@ import (
 	"sync"
 
 	"github.com/f7ed0/go-multiplayer-game/client/animatedsprite"
+	"github.com/f7ed0/go-multiplayer-game/client/display/drawableentity"
 	"github.com/f7ed0/go-multiplayer-game/client/handleplayer"
 	"github.com/f7ed0/go-multiplayer-game/client/mapdisp"
-	"github.com/f7ed0/go-multiplayer-game/commons/entity/player"
+	"github.com/f7ed0/go-multiplayer-game/commons/entity"
 	"github.com/f7ed0/go-multiplayer-game/commons/lg"
 	"github.com/f7ed0/go-multiplayer-game/commons/objects"
 	"github.com/veandco/go-sdl2/sdl"
@@ -23,8 +24,8 @@ type Window struct {
 	GameMap mapdisp.GameMap
 
 	Me           handleplayer.HandledPlayer
-	Other        []player.PlayerCore
-	PlayerModels map[player.PlayerType]handleplayer.PlayerModel
+	Other        map[string]*handleplayer.DispPlayer
+	PlayerModels map[entity.EntityType]drawableentity.EntityModel
 	OtherMutex   sync.RWMutex
 
 	width  int
@@ -62,7 +63,8 @@ func NewWindow() (*Window, error) {
 		width:        1280,
 		height:       720,
 		Me:           handleplayer.NewHandledPlayer(),
-		PlayerModels: make(map[player.PlayerType]handleplayer.PlayerModel),
+		PlayerModels: make(map[entity.EntityType]drawableentity.EntityModel),
+		Other:        make(map[string]*handleplayer.DispPlayer),
 	}, nil
 }
 
@@ -72,20 +74,21 @@ func (w *Window) LoadMap(path string) (err error) {
 }
 
 func (w *Window) LoadPlayerModels() (err error) {
-	kwalk, err := animatedsprite.NewAesprite("./assets/entity/knight/Knight-1.json")
+	kwalk, err := animatedsprite.NewAesprite("./assets/entity/knight/Knight-1.json", "./assets/entity/knight/Knight-1.png", w.renderer)
 	if err != nil {
 		return
 	}
-	kidle, err := animatedsprite.NewAesprite("./assets/entity/knight/Knight-1_idle.json")
+	kidle, err := animatedsprite.NewAesprite("./assets/entity/knight/Knight-1_idle.json", "./assets/entity/knight/Knight-1_idle.png", w.renderer)
 	if err != nil {
 		return
 	}
-	w.PlayerModels[player.KNIGHT] = handleplayer.PlayerModel{
+	w.PlayerModels[entity.KNIGHT] = drawableentity.EntityModel{
 		States: map[string]animatedsprite.AnimatedSptite{
 			"walking": kwalk,
 			"idling":  kidle,
 		},
 	}
 	lg.Debug.Println(kwalk, kidle)
+	//lg.Debug.Println(kwalk.GetFrame())
 	return
 }

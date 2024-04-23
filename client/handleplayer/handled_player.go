@@ -13,7 +13,7 @@ import (
 type HandledPlayer struct {
 	Camera           camera.Camera
 	PlayerController Controller
-	player.PlayerCore
+	DispPlayer
 	sync.RWMutex
 }
 
@@ -49,7 +49,7 @@ func NewHandledPlayer() HandledPlayer {
 				Z: 2,
 			},
 		},
-		PlayerCore: player.NewPlayer(),
+		DispPlayer: FromPlayerCore(player.NewPlayer()),
 	}
 }
 

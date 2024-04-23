@@ -26,3 +26,9 @@ func NewEntity(killable, breakable, cptw, cpth bool) Entity {
 		Health:              1,
 	}
 }
+
+type EntityType uint
+
+const (
+	KNIGHT EntityType = 1
+)

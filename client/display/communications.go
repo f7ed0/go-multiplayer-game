@@ -3,7 +3,9 @@ package display
 import (
 	"encoding/gob"
 	"net"
+	"slices"
 
+	"github.com/f7ed0/go-multiplayer-game/client/handleplayer"
 	"github.com/f7ed0/go-multiplayer-game/commons/entity/player"
 	"github.com/f7ed0/go-multiplayer-game/commons/lg"
 	"github.com/f7ed0/go-multiplayer-game/commons/objects"
@@ -49,7 +51,7 @@ func (w *Window) Communication(conn net.Conn) {
 		}
 
 		w.Me.Lock()
-		if objects.Diff(w.Me.Position, pcore.Position).N2_2D() > 30 {
+		if objects.Diff(w.Me.Position, pcore.Position).N2_2D() > 10 {
 			lg.Debug.Println("ROLBACKED")
 			w.Me.Position = pcore.Position
 		}
@@ -63,7 +65,25 @@ func (w *Window) Communication(conn net.Conn) {
 		}
 
 		w.OtherMutex.Lock()
-		w.Other = pcores
+		showed := []string{}
+		for _, item := range pcores {
+			_, ok := w.Other[item.Hash]
+			if ok {
+				w.Other[item.Hash].PlayerCore = item
+				w.Other[item.Hash].Here = true
+			} else {
+				p := handleplayer.FromPlayerCore(item)
+				w.Other[item.Hash] = &p
+			}
+			showed = append(showed, item.Hash)
+
+		}
+		for k := range w.Other {
+			if !slices.Contains(showed, k) {
+				w.Other[k].Here = false
+			}
+		}
+
 		w.OtherMutex.Unlock()
 
 	}
