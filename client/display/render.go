@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/f7ed0/go-multiplayer-game/client/display/sdlplus"
-	hitbox "github.com/f7ed0/go-multiplayer-game/commons/Hitbox"
 	"github.com/f7ed0/go-multiplayer-game/commons/lg"
 	"github.com/f7ed0/go-multiplayer-game/commons/objects"
 	"github.com/veandco/go-sdl2/sdl"
@@ -44,18 +43,6 @@ func (w *Window) mapUnderLayer() {
 
 }
 
-func (w *Window) hiboxLayer() {
-	w.renderer.SetDrawColor(255, 0, 0, 255)
-	for _, poly := range w.GameMap.Walls {
-		w.DrawHitboxes(poly)
-	}
-	w.renderer.SetDrawColor(0, 0, 255, 255)
-	for _, poly := range w.GameMap.Holes {
-		w.DrawHitboxes(poly)
-	}
-
-}
-
 func (w *Window) debugLayer() {
 	fps_text := fmt.Sprintf("%.0f FPS", w.debug.FrameCountBuffer.GetMean()*2.5)
 	sdlplus.RenderText(w.renderer, w.font, fps_text, YELLOW, 10, objects.Point{X: 0, Y: 0})
@@ -71,18 +58,6 @@ var (
 	YELLOW = sdl.Color{R: 255, G: 255, B: 0, A: 255}
 	ORANGE = sdl.Color{R: 255, G: 200, B: 0, A: 255}
 )
-
-func (w *Window) DrawHitboxes(p hitbox.Hitbox) {
-	for i := 0; i < len(p.Points)-1; i++ {
-		pi := w.applyOffset(p.Points[i])
-		pi1 := w.applyOffset(p.Points[i+1])
-		//lg.Verbose.Println(p.Points[i], offset, pi)
-		w.renderer.DrawLineF(pi.X, pi.Y, pi1.X, pi1.Y)
-	}
-	pl := w.applyOffset(p.Points[len(p.Points)-1])
-	pf := w.applyOffset(p.Points[0])
-	w.renderer.DrawLineF(pl.X, pl.Y, pf.X, pf.Y)
-}
 
 func (w *Window) applyOffset(p objects.Point) objects.Point {
 	return w.Me.Camera.ApplyOffset(p, w.width, w.height)

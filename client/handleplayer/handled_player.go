@@ -46,7 +46,7 @@ func NewHandledPlayer() HandledPlayer {
 			Position: objects.Point{
 				X: 0,
 				Y: 0,
-				Z: 2,
+				Z: 5,
 			},
 		},
 		DispPlayer: FromPlayerCore(player.NewPlayer()),

@@ -9,7 +9,6 @@ import (
 	"github.com/f7ed0/go-multiplayer-game/client/handleplayer"
 	"github.com/f7ed0/go-multiplayer-game/commons/entity/player"
 	"github.com/f7ed0/go-multiplayer-game/commons/lg"
-	"github.com/f7ed0/go-multiplayer-game/commons/objects"
 )
 
 func (w *Window) Communication(conn net.Conn) {
@@ -29,7 +28,7 @@ func (w *Window) Communication(conn net.Conn) {
 		return
 	}
 	lg.Info.Println("Connected to", conn.RemoteAddr())
-	for {
+	for w.exit {
 		err = in.Decode(&msg)
 		if err != nil {
 			lg.Error.Fatalln(err.Error())
@@ -52,10 +51,8 @@ func (w *Window) Communication(conn net.Conn) {
 		}
 
 		w.Me.Lock()
-		if objects.Diff(w.Me.Position, pcore.Position).N2_2D() > 10 {
-			lg.Debug.Println("ROLBACKED")
-			w.Me.Position = pcore.Position
-		}
+		w.Me.Position = pcore.Position
+		w.Me.LastTime = time.Now()
 		w.Me.Unlock()
 
 		var pcores []player.PlayerCore
@@ -72,7 +69,6 @@ func (w *Window) Communication(conn net.Conn) {
 			_, ok := w.Other[item.Hash]
 			if ok {
 				w.Other[item.Hash].PlayerCore = item
-				lg.Debug.Println(item, time.Since(item.LastTime))
 				w.Other[item.Hash].Here = true
 			} else {
 				p := handleplayer.FromPlayerCore(item)
@@ -86,7 +82,6 @@ func (w *Window) Communication(conn net.Conn) {
 				w.Other[k].Here = false
 			}
 		}
-		lg.Debug.Println(len(w.Other))
 		w.OtherMutex.Unlock()
 
 	}

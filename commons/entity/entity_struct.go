@@ -16,7 +16,7 @@ type Entity struct {
 	HitBoxes            []hitbox.Hitbox
 }
 
-func NewEntity(killable, breakable, cptw, cpth bool) Entity {
+func NewEntity(killable, breakable, cptw, cpth bool, hits []hitbox.Hitbox) Entity {
 	return Entity{
 		killable:            killable,
 		breakable:           breakable,
@@ -24,6 +24,7 @@ func NewEntity(killable, breakable, cptw, cpth bool) Entity {
 		canPassThroughHoles: cpth,
 		Position:            objects.Point{X: 1, Y: 1},
 		Health:              1,
+		HitBoxes:            hits,
 	}
 }
 

@@ -11,7 +11,7 @@ import (
 func main() {
 	lg.Init(lg.ALL, true)
 
-	conn, err := net.Dial("tcp", "192.168.179.84:44444")
+	conn, err := net.Dial("tcp", "localhost:44444")
 	if err != nil {
 		log.Fatal("Error during connection : " + err.Error())
 	}
