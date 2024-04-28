@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/f7ed0/go-multiplayer-game/commons/entity/player"
-	"github.com/f7ed0/go-multiplayer-game/commons/lg"
 	"github.com/f7ed0/go-multiplayer-game/server/globals"
+	"github.com/f7ed0/golog/lg"
 )
 
 func playerThread(conn net.Conn) {

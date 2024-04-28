@@ -5,7 +5,7 @@ import (
 	"net"
 
 	"github.com/f7ed0/go-multiplayer-game/client/display"
-	"github.com/f7ed0/go-multiplayer-game/commons/lg"
+	"github.com/f7ed0/golog/lg"
 )
 
 func main() {

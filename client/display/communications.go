@@ -8,7 +8,7 @@ import (
 
 	"github.com/f7ed0/go-multiplayer-game/client/handleplayer"
 	"github.com/f7ed0/go-multiplayer-game/commons/entity/player"
-	"github.com/f7ed0/go-multiplayer-game/commons/lg"
+	"github.com/f7ed0/golog/lg"
 )
 
 func (w *Window) Communication(conn net.Conn) {

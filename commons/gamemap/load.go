@@ -5,7 +5,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/f7ed0/go-multiplayer-game/commons/lg"
+	"github.com/f7ed0/golog/lg"
 )
 
 func LoadMap(path string) (gm HeadLessMap, err error) {

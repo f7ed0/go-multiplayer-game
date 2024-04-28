@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/f7ed0/go-multiplayer-game/client/display/sdlplus"
-	"github.com/f7ed0/go-multiplayer-game/commons/lg"
 	"github.com/f7ed0/go-multiplayer-game/commons/objects"
+	"github.com/f7ed0/golog/lg"
 	"github.com/veandco/go-sdl2/sdl"
 )
 

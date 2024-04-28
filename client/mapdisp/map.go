@@ -9,7 +9,7 @@ import (
 	"sort"
 
 	"github.com/f7ed0/go-multiplayer-game/commons/gamemap"
-	"github.com/f7ed0/go-multiplayer-game/commons/lg"
+	"github.com/f7ed0/golog/lg"
 	"github.com/veandco/go-sdl2/sdl"
 )
 

@@ -5,7 +5,7 @@ import (
 	"github.com/f7ed0/go-multiplayer-game/client/handleplayer/camera"
 	"github.com/f7ed0/go-multiplayer-game/commons/entity"
 	"github.com/f7ed0/go-multiplayer-game/commons/entity/player"
-	"github.com/f7ed0/go-multiplayer-game/commons/lg"
+	"github.com/f7ed0/golog/lg"
 	"github.com/veandco/go-sdl2/sdl"
 )
 

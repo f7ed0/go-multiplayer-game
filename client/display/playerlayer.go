@@ -5,8 +5,8 @@ import (
 
 	"github.com/f7ed0/go-multiplayer-game/client/display/drawableentity"
 	"github.com/f7ed0/go-multiplayer-game/client/handleplayer"
-	"github.com/f7ed0/go-multiplayer-game/commons/lg"
 	"github.com/f7ed0/go-multiplayer-game/commons/objects"
+	"github.com/f7ed0/golog/lg"
 )
 
 func (w *Window) PlayerLayer(delta int) {

@@ -3,7 +3,7 @@ package display
 import (
 	"time"
 
-	"github.com/f7ed0/go-multiplayer-game/commons/lg"
+	"github.com/f7ed0/golog/lg"
 	"github.com/veandco/go-sdl2/ttf"
 )
 
