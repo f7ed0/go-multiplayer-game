@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/f7ed0/go-multiplayer-game/commons/lg"
+	"github.com/f7ed0/go-multiplayer-game/commons/objects"
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -23,6 +24,15 @@ func (w *Window) event(delta float32) {
 	}
 	w.Me.Lock()
 	w.Me.ApplyEvent(delta)
+	for i, phit := range w.Me.HitBoxes {
+		for j, polys := range w.GameMap.Walls {
+			if objects.PolyPolyIntersect(polys.Polygon, phit.Polygon.OffsetPolygon(w.Me.Position)) {
+				lg.Debug.Println("!! COLLISION DETECTED", i, j)
+			} else {
+				lg.Debug.Println("NO COLLISION DETECTED")
+			}
+		}
+	}
 	w.Me.Unlock()
 	w.OtherMutex.Lock()
 

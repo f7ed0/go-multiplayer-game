@@ -2,7 +2,6 @@ package display
 
 import (
 	hitbox "github.com/f7ed0/go-multiplayer-game/commons/Hitbox"
-	"github.com/f7ed0/go-multiplayer-game/commons/objects"
 )
 
 func (w *Window) hiboxLayer() {
@@ -15,7 +14,7 @@ func (w *Window) hiboxLayer() {
 		w.DrawHitboxes(poly)
 	}
 	for _, hits := range w.Me.HitBoxes {
-		w.DrawOffsettedHitboxes(hits, w.Me.Position)
+		w.DrawHitboxes(hitbox.Hitbox{hits.Polygon.OffsetPolygon(w.Me.Position)})
 	}
 
 }
@@ -29,17 +28,5 @@ func (w *Window) DrawHitboxes(p hitbox.Hitbox) {
 	}
 	pl := w.applyOffset(p.Points[len(p.Points)-1])
 	pf := w.applyOffset(p.Points[0])
-	w.renderer.DrawLineF(pl.X, pl.Y, pf.X, pf.Y)
-}
-
-func (w *Window) DrawOffsettedHitboxes(p hitbox.Hitbox, offset objects.Point) {
-	for i := 0; i < len(p.Points)-1; i++ {
-		pi := w.applyOffset(objects.Sum2D(p.Points[i], offset))
-		pi1 := w.applyOffset(objects.Sum2D(p.Points[i+1], offset))
-		//lg.Verbose.Println(p.Points[i], offset, pi)
-		w.renderer.DrawLineF(pi.X, pi.Y, pi1.X, pi1.Y)
-	}
-	pl := w.applyOffset(objects.Sum2D(p.Points[len(p.Points)-1], offset))
-	pf := w.applyOffset(objects.Sum2D(p.Points[0], offset))
 	w.renderer.DrawLineF(pl.X, pl.Y, pf.X, pf.Y)
 }

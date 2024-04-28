@@ -10,10 +10,8 @@ type Point struct {
 
 type Vector Point
 
-func (p *Point) Add(other Vector) {
-	p.X += other.X
-	p.Y += other.Y
-	p.Z += other.Z
+func (p *Point) Add(other Vector) Point {
+	return Point{p.X + other.X, p.Y + other.Y, p.Z + other.Z}
 }
 
 func Sum2D(a, b Point) Point {
@@ -26,6 +24,10 @@ func Diff(a, b Point) Vector {
 
 func (v Vector) N2_2D() float32 {
 	return float32(math.Sqrt(float64(v.X*v.X + v.Y*v.Y)))
+}
+
+func Cross(a, b Vector) float32 {
+	return a.X*b.Y - a.Y*b.X
 }
 
 func Sign(x float32) float32 {
@@ -54,4 +56,8 @@ func (v Vector) Normalized2D() Vector {
 
 	return Div2D(v, v.N2_2D())
 
+}
+
+func (v Vector) Times(coef float32) Vector {
+	return Vector{X: v.X * coef, Y: v.Y * coef}
 }
