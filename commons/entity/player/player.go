@@ -24,10 +24,10 @@ func NewPlayer() PlayerCore {
 			{
 				Polygon: objects.Polygon{
 					Points: []objects.Point{
-						{X: 12, Y: 15},
-						{X: 29, Y: 15},
-						{X: 29, Y: 31},
-						{X: 12, Y: 31},
+						{X: -8, Y: 15},
+						{X: 9, Y: 15},
+						{X: 9, Y: 31},
+						{X: -8, Y: 31},
 					},
 				},
 			},
@@ -37,19 +37,21 @@ func NewPlayer() PlayerCore {
 }
 
 func (p *PlayerCore) ApplyEvent(delta float32) {
+	var direction objects.Vector
 	if p.ActionBuffer.Get(MOVE_UP) {
-		p.Position.Y -= 100 * delta
+		direction.Y -= 1
 	}
 	if p.ActionBuffer.Get(MOVE_DOWN) {
-		p.Position.Y += 100 * delta
+		direction.Y += 1
 	}
 	if p.ActionBuffer.Get(MOVE_LEFT) {
-		p.Position.X -= 100 * delta
+		direction.X -= 1
 	}
 	if p.ActionBuffer.Get(MOVE_RIGHT) {
-		p.Position.X += 100 * delta
+		direction.X += 1
 	}
-
+	norm := direction.Normalized2D()
+	p.Position = p.Position.Add(norm.Times(150 * delta))
 }
 
 func (p *PlayerCore) ClearEvent() {

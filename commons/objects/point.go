@@ -42,7 +42,7 @@ func Sign(x float32) float32 {
 
 // CALC THE VERCTOR BA
 func Diff2D(a, b Point) Vector {
-	return Vector{X: b.X - a.X, Y: b.X - a.X}
+	return Vector{X: b.X - a.X, Y: b.Y - a.Y}
 }
 
 func Div2D(v Vector, amount float32) Vector {

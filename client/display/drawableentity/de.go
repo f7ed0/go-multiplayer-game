@@ -5,6 +5,7 @@ import (
 	"github.com/f7ed0/go-multiplayer-game/client/handleplayer/camera"
 	"github.com/f7ed0/go-multiplayer-game/commons/entity"
 	"github.com/f7ed0/go-multiplayer-game/commons/entity/player"
+	"github.com/f7ed0/go-multiplayer-game/commons/objects"
 	"github.com/f7ed0/golog/lg"
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -13,7 +14,6 @@ var FrameCounter int = 0
 
 func Draw(ent *handleplayer.DispPlayer, r *sdl.Renderer, cam camera.Camera, pm map[entity.EntityType]EntityModel, delta int) error {
 	boundaries := r.GetViewport()
-	offseted := cam.ApplyOffset(ent.Position, int(boundaries.W), int(boundaries.H))
 
 	r.SetDrawColor(255, 100, 100, 100)
 	var rec sdl.Rect
@@ -30,6 +30,8 @@ func Draw(ent *handleplayer.DispPlayer, r *sdl.Renderer, cam camera.Camera, pm m
 		rec = pm[entity.KNIGHT].States["idling"].GetFrame("down", ent.FrameCount)
 		walking = false
 	}
+
+	offseted := cam.ApplyOffset(objects.Point{X: ent.Position.X - float32(rec.W/4), Y: ent.Position.Y}, int(boundaries.W), int(boundaries.H))
 
 	height := cam.ApplyOffsetF32(float32(rec.H / 2))
 	width := cam.ApplyOffsetF32(float32(rec.W / 2))
@@ -56,15 +58,6 @@ func Draw(ent *handleplayer.DispPlayer, r *sdl.Renderer, cam camera.Camera, pm m
 			return err
 		}
 	}
-	r.SetDrawColor(255, 255, 255, 255)
-	r.DrawRectF(
-		&sdl.FRect{
-			X: offseted.X,
-			Y: offseted.Y,
-			W: width,
-			H: height,
-		},
-	)
 	ent.FrameCount += delta
 	return nil
 }

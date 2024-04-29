@@ -22,17 +22,25 @@ func (w *Window) event(delta float32) {
 			w.handleWindowEvent(e.(*sdl.WindowEvent))
 		}
 	}
+	mousex, mousey, _ := sdl.GetMouseState()
+	mouse := objects.Point{X: float32(mousex), Y: float32(mousey)}
+	ppos := w.applyOffset(w.Me.Position)
+	angleVector := objects.Diff2D(ppos, mouse).Normalized2D()
+	angle := float32(math.Acos(float64(angleVector.X))) * objects.Sign(angleVector.Y)
+	lg.Debug.Println(mouse, ppos, angleVector, angle)
+
 	w.Me.Lock()
 	w.Me.ApplyEvent(delta)
-	for i, phit := range w.Me.HitBoxes {
-		for j, polys := range w.GameMap.Walls {
-			if objects.PolyPolyIntersect(polys.Polygon, phit.Polygon.OffsetPolygon(w.Me.Position)) {
-				lg.Debug.Println("!! COLLISION DETECTED", i, j)
-			} else {
-				lg.Debug.Println("NO COLLISION DETECTED")
+	/*
+		for i, phit := range w.Me.HitBoxes {
+			for j, polys := range w.GameMap.Walls {
+				if objects.PolyPolyIntersect(polys.Polygon, phit.Polygon.OffsetPolygon(w.Me.Position)) {
+					lg.Debug.Println("!! COLLISION DETECTED", i, j)
+				} else {
+					lg.Debug.Println("NO COLLISION DETECTED")
+				}
 			}
-		}
-	}
+		} */
 	w.Me.Unlock()
 	w.OtherMutex.Lock()
 

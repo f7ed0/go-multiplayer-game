@@ -28,7 +28,7 @@ func (w *Window) Communication(conn net.Conn) {
 		return
 	}
 	lg.Info.Println("Connected to", conn.RemoteAddr())
-	for w.exit {
+	for !w.exit {
 		err = in.Decode(&msg)
 		if err != nil {
 			lg.Error.Fatalln(err.Error())
