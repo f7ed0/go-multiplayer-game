@@ -1,6 +1,8 @@
 package drawableentity
 
 import (
+	"math"
+
 	"github.com/f7ed0/go-multiplayer-game/client/handleplayer"
 	"github.com/f7ed0/go-multiplayer-game/client/handleplayer/camera"
 	"github.com/f7ed0/go-multiplayer-game/commons/entity"
@@ -27,8 +29,17 @@ func Draw(ent *handleplayer.DispPlayer, r *sdl.Renderer, cam camera.Camera, pm m
 	} else if ent.ActionBuffer.Get(player.MOVE_RIGHT) && !ent.ActionBuffer.Get(player.MOVE_LEFT) {
 		rec = pm[entity.KNIGHT].States["walking"].GetFrame("right", ent.FrameCount)
 	} else {
-		rec = pm[entity.KNIGHT].States["idling"].GetFrame("down", ent.FrameCount)
 		walking = false
+		if ent.Orientation > math.Pi/4 && ent.Orientation < 3*math.Pi/4 {
+			rec = pm[entity.KNIGHT].States["idling"].GetFrame("down", ent.FrameCount)
+		} else if ent.Orientation < -math.Pi/4 && ent.Orientation > -3*math.Pi/4 {
+			rec = pm[entity.KNIGHT].States["idling"].GetFrame("up", ent.FrameCount)
+		} else if ent.Orientation > -math.Pi/4 && ent.Orientation < math.Pi/4 {
+			rec = pm[entity.KNIGHT].States["idling"].GetFrame("right", ent.FrameCount)
+		} else {
+			rec = pm[entity.KNIGHT].States["idling"].GetFrame("left", ent.FrameCount)
+		}
+
 	}
 
 	offseted := cam.ApplyOffset(objects.Point{X: ent.Position.X - float32(rec.W/4), Y: ent.Position.Y}, int(boundaries.W), int(boundaries.H))

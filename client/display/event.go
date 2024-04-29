@@ -26,8 +26,9 @@ func (w *Window) event(delta float32) {
 	mouse := objects.Point{X: float32(mousex), Y: float32(mousey)}
 	ppos := w.applyOffset(w.Me.Position)
 	angleVector := objects.Diff2D(ppos, mouse).Normalized2D()
-	angle := float32(math.Acos(float64(angleVector.X))) * objects.Sign(angleVector.Y)
-	lg.Debug.Println(mouse, ppos, angleVector, angle)
+	w.Me.Orientation = float32(math.Acos(float64(angleVector.X))) * objects.Sign(angleVector.Y)
+
+	//lg.Debug.Println(mouse, ppos, angleVector, w.Me.Orientation)
 
 	w.Me.Lock()
 	w.Me.ApplyEvent(delta)

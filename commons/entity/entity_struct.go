@@ -7,7 +7,7 @@ import (
 
 type Entity struct {
 	Position            objects.Point
-	orientation         float64
+	Orientation         float32
 	killable            bool
 	breakable           bool
 	Health              float64

@@ -37,6 +37,7 @@ func (w *Window) Communication(conn net.Conn) {
 
 		w.Me.RLock()
 		err = out.Encode(&w.Me.ActionBuffer)
+		err = out.Encode(&w.Me.Orientation)
 		w.Me.RUnlock()
 
 		if err != nil {

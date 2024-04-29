@@ -27,6 +27,7 @@ func playerThread(conn net.Conn) {
 	if msg == "OK" {
 		lg.Info.Println("Auth Successfull")
 		var acts player.ActionBuffer
+		var orientation float32
 		id := globals.Players.AddNewPlayer()
 		defer globals.Players.DropPlayer(id)
 
@@ -40,14 +41,20 @@ func playerThread(conn net.Conn) {
 				return
 			}
 			err = in.Decode(&acts)
-			globals.Players.Lock()
-			value := globals.Players.Players[id]
-			value.ActionBuffer = acts
-			globals.Players.Unlock()
 			if err != nil {
 				lg.Error.Println(err.Error())
 				return
 			}
+			err = in.Decode(&orientation)
+			if err != nil {
+				lg.Error.Println(err.Error())
+				return
+			}
+			globals.Players.Lock()
+			value := globals.Players.Players[id]
+			value.ActionBuffer = acts
+			value.Orientation = orientation
+			globals.Players.Unlock()
 
 			globals.Players.RLock()
 			out.Encode(value)
