@@ -14,7 +14,7 @@ func (w *Window) hiboxLayer() {
 		w.DrawHitboxes(poly)
 	}
 	for _, hits := range w.Me.HitBoxes {
-		w.DrawHitboxes(hitbox.Hitbox{hits.Polygon.OffsetPolygon(w.Me.Position)})
+		w.DrawHitboxes(hitbox.Hitbox{Polygon: hits.Polygon.OffsetPolygon(w.Me.Position)})
 	}
 
 }

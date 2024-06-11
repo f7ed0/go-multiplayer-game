@@ -61,3 +61,12 @@ func (v Vector) Normalized2D() Vector {
 func (v Vector) Times(coef float32) Vector {
 	return Vector{X: v.X * coef, Y: v.Y * coef}
 }
+
+func (v Vector) Rotate2D(angle float32) Vector {
+	cosa := float32(math.Cos(float64(angle)))
+	sina := float32(math.Sin(float64(angle)))
+	return Vector{
+		X: cosa*v.X - sina*v.Y,
+		Y: cosa*v.Y + sina*v.X,
+	}
+}

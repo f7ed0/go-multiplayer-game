@@ -15,10 +15,15 @@ import (
 var FrameCounter int = 0
 
 func Draw(ent *handleplayer.DispPlayer, r *sdl.Renderer, cam camera.Camera, pm map[entity.EntityType]EntityModel, delta int) error {
+	// Calculating render variables
 	boundaries := r.GetViewport()
 
+	// Drawing
+
 	r.SetDrawColor(255, 100, 100, 100)
+
 	var rec sdl.Rect
+
 	walking := true
 	if ent.ActionBuffer.Get(player.MOVE_UP) && !ent.ActionBuffer.Get(player.MOVE_DOWN) {
 		rec = pm[entity.KNIGHT].States["walking"].GetFrame("up", ent.FrameCount)
@@ -42,10 +47,21 @@ func Draw(ent *handleplayer.DispPlayer, r *sdl.Renderer, cam camera.Camera, pm m
 
 	}
 
-	offseted := cam.ApplyOffset(objects.Point{X: ent.Position.X - float32(rec.W/4), Y: ent.Position.Y}, int(boundaries.W), int(boundaries.H))
-
 	height := cam.ApplyOffsetF32(float32(rec.H / 2))
 	width := cam.ApplyOffsetF32(float32(rec.W / 2))
+
+	offseted := cam.ApplyOffset(objects.Point{X: ent.Position.X - float32(rec.W/4), Y: ent.Position.Y}, int(boundaries.W), int(boundaries.H))
+
+	b := objects.Vector{X: 50, Y: 0}
+
+	b = b.Rotate2D(ent.Orientation)
+
+	lg.Debug.Println(b)
+
+	r.SetDrawColor(255, 0, 0, 255)
+
+	r.FillRectF(&sdl.FRect{X: b.X + offseted.X + width/2, Y: b.Y + height/2 + offseted.Y, W: 10, H: 10})
+
 	if walking {
 		err := r.CopyF(pm[entity.KNIGHT].States["walking"].GetTexture(), &rec, &sdl.FRect{
 			X: offseted.X,

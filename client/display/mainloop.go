@@ -49,4 +49,8 @@ func (w *Window) Setup() {
 	if err != nil {
 		lg.Error.Fatalln(err.Error())
 	}
+	err = w.LoadCursors()
+	if err != nil {
+		lg.Error.Fatalln(err.Error())
+	}
 }
